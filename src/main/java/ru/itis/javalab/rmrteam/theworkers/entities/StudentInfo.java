@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -31,16 +31,16 @@ public class StudentInfo implements Serializable{
     @MapsId
     private User user;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "student_info")
-    private List<TeacherInfo> teachers;
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "students")
+    private Set<TeacherInfo> teachers;
 
     @ManyToMany
     @JoinTable(name = "student_to_tag",
             joinColumns = @JoinColumn(name = "student_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id"))
-    private List<Tag> tags;
+    private Set<Tag> tags;
 
-    @OneToMany(mappedBy = "student_info", cascade = CascadeType.ALL)
-    private List<Resume> resumes;
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
+    private Set<Resume> resumes;
 
 }

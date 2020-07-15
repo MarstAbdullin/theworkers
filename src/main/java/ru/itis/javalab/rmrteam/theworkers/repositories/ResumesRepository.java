@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 import ru.itis.javalab.rmrteam.theworkers.entities.Resume;
 
 @Repository
-public interface ResumeRepository extends JpaRepository<Resume, Long> {
+public interface ResumesRepository extends JpaRepository<Resume, Long> {
 }

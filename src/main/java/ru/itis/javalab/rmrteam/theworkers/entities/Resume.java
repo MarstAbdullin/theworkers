@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -15,7 +15,6 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name = "resume")
-
 public class Resume implements Serializable{
 
     @Id
@@ -41,5 +40,5 @@ public class Resume implements Serializable{
     private StudentInfo student;
 
     @OneToMany(mappedBy = "resume", cascade = CascadeType.ALL)
-    private List<Certificate> certificates;
+    private Set<Certificate> certificates;
 }

@@ -2,8 +2,8 @@ package ru.itis.javalab.rmrteam.theworkers.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import ru.itis.javalab.rmrteam.theworkers.entities.TeacherInfo;
+import ru.itis.javalab.rmrteam.theworkers.entities.StudentInfo;
 
 @Repository
-public interface TeacherInfoRepository extends JpaRepository<TeacherInfo, Long> {
+public interface StudentsInfoRepository extends JpaRepository<StudentInfo, Long> {
 }
