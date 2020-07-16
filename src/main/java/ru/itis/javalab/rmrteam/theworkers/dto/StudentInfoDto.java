@@ -16,6 +16,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 public class StudentInfoDto {
+
     private Long id;
     private Integer age;
     private Integer courseNumber;
@@ -27,4 +28,5 @@ public class StudentInfoDto {
     private Set<Tag> tags;
     private Set<Resume> resumes;
     private UserDto userDto;
+    private Boolean confirmed;
 }

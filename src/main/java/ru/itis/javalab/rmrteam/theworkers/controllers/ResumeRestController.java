@@ -20,7 +20,7 @@ public class ResumeRestController {
     @PreAuthorize("hasRole('STUDENT')")
     @PostMapping(value = "/resume")
     public ResponseEntity<?> changeResume(@RequestBody Resume resume, Authentication authentication) {
-        if (resume.getStudent().getId().equals(((UserDetailsImpl)authentication.getPrincipal()).getUserId())) {
+        if (resume.getStudent().getId().equals(((UserDetailsImpl) authentication.getPrincipal()).getUserId())) {
             resumeService.updateResume(resume);
             return new ResponseEntity<>(HttpStatus.OK);
         } else
@@ -29,7 +29,7 @@ public class ResumeRestController {
 
     @PreAuthorize("hasRole('STUDENT')")
     @PostMapping(value = "/createResume")
-    public ResponseEntity<?> createResume(@RequestBody Resume resume, Authentication authentication) {
+    public ResponseEntity<?> createResume(@RequestBody Resume resume) {
         if (resume != null) {
             resumeService.saveResume(resume);
             return new ResponseEntity<>(HttpStatus.OK);
@@ -43,6 +43,21 @@ public class ResumeRestController {
         if (resumeService.getResume(id).isPresent()) {
             resume = resumeService.getResume(id).get();
             return new ResponseEntity<>(resume, HttpStatus.OK);
+        } else
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @PreAuthorize("hasRole('TEACHER')")
+    @GetMapping(value = "/resume/{id}/confirm")
+    public ResponseEntity<?> confirmResume(@PathVariable(name = "id") Long id, Authentication authentication) {
+        Resume resume;
+        if (resumeService.getResume(id).isPresent()) {
+            resume = resumeService.getResume(id).get();
+            if (resume.getTeacherInfo().getId().equals(((UserDetailsImpl) authentication.getPrincipal()).getUserId())) {
+                resumeService.confirmResume(id);
+                return new ResponseEntity<>(HttpStatus.OK);
+            } else
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } else
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }

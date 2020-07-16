@@ -66,4 +66,14 @@ public class ResumeServiceImpl implements ResumeService{
     public Optional<Resume> getResume(Long id) {
         return resumesRepository.findById(id);
     }
+
+    @Override
+    public void confirmResume(Long id) {
+
+        if (resumesRepository.findById(id).isPresent()) {
+            Resume resume = resumesRepository.findById(id).get();
+            resume.setConfirmedByTeacher(true);
+            resumesRepository.save(resume);
+        }
+    }
 }

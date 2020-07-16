@@ -11,4 +11,6 @@ public interface ResumeService {
     void saveResume(Resume resume);
 
     Optional<Resume> getResume(Long id);
+
+    void confirmResume(Long id);
 }

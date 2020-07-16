@@ -20,9 +20,6 @@ import java.util.Optional;
 public class TeacherRestController {
 
     @Autowired
-    private UsersService usersService;
-
-    @Autowired
     private TeacherInfoService teacherInfoService;
 
     @PreAuthorize("hasRole('TEACHER')")

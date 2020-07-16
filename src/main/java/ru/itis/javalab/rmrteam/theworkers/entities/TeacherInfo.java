@@ -26,7 +26,6 @@ public class TeacherInfo implements Serializable {
     private String positionInUniversity;
     private String workingExperience;
     private String photoPath;
-    private Boolean confirmed;
 
     @OneToOne
     @MapsId
