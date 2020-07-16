@@ -21,6 +21,7 @@ public class User implements Serializable {
     private Long id;
     private String email;
     private String hash;
+    private Boolean confirmed;
 
     @Enumerated(EnumType.STRING)
     private Role role;

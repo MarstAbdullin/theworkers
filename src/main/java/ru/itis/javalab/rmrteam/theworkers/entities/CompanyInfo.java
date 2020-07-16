@@ -25,6 +25,7 @@ public class CompanyInfo implements Serializable {
     private String address;
     private String logoPath;
     private String phoneNumber;
+    private Boolean confirmed;
 
     @OneToOne
     @MapsId("company")

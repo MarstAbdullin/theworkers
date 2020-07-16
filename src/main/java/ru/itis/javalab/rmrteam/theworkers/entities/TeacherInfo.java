@@ -25,6 +25,8 @@ public class TeacherInfo implements Serializable {
     private String secondName;
     private String positionInUniversity;
     private String workingExperience;
+    private String photoPath;
+    private Boolean confirmed;
 
     @OneToOne
     @MapsId
@@ -41,4 +43,7 @@ public class TeacherInfo implements Serializable {
             joinColumns = @JoinColumn(name = "teacher_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private Set<Tag> tags;
+
+    @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL)
+    private Set<Resume> resumes;
 }

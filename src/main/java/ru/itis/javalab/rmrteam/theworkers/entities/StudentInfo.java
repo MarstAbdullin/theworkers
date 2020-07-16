@@ -26,6 +26,8 @@ public class StudentInfo implements Serializable{
     private String specialty;
     private String firstName;
     private String secondName;
+    private String photoPath;
+    private Boolean confirmed;
 
     @OneToOne
     @MapsId
