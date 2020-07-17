@@ -27,5 +27,4 @@ public class StudentInfoDto {
     private Set<Tag> tags;
     private Set<Resume> resumes;
     private UserDto userDto;
-    private Boolean confirmed;
 }
