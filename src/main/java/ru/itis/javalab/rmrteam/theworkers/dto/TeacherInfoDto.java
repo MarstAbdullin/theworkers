@@ -24,6 +24,4 @@ public class TeacherInfoDto {
     private Set<StudentInfo> students;
     private Set<Tag> tags;
     private String photoPath;
-    private Boolean confirmed;
-
 }

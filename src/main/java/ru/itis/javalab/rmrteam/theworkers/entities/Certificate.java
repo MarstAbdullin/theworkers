@@ -11,7 +11,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "сertificate")
+@Table(name = "certificate")
 public class Certificate {
     
     @Id
