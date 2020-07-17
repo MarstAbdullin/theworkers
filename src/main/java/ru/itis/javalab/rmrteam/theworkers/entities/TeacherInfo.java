@@ -43,6 +43,6 @@ public class TeacherInfo implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private Set<Tag> tags;
 
-    @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "teacherInfo", cascade = CascadeType.ALL)
     private Set<Resume> resumes;
 }
