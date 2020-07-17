@@ -10,16 +10,15 @@ import org.springframework.stereotype.Service;
 import ru.itis.javalab.rmrteam.theworkers.dto.SignInDto;
 import ru.itis.javalab.rmrteam.theworkers.dto.TokenDto;
 import ru.itis.javalab.rmrteam.theworkers.entities.User;
-import ru.itis.javalab.rmrteam.theworkers.repositories.UserRepository;
-
+import ru.itis.javalab.rmrteam.theworkers.repositories.UsersRepository;
 
 import java.util.Optional;
 
 @Service
-public class SignInServiceImpl implements SignInService {
+public class  SignInServiceImpl implements SignInService {
 
     @Autowired
-    private UserRepository usersRepository;
+    private UsersRepository usersRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;

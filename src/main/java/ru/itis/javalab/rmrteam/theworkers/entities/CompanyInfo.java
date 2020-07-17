@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -27,15 +27,15 @@ public class CompanyInfo implements Serializable {
     private String phoneNumber;
 
     @OneToOne
-    @MapsId
+    @MapsId("company")
     private User user;
 
-    @OneToMany(mappedBy = "company_info", cascade = CascadeType.ALL)
-    private List<Review> reviews;
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
+    private Set<Review> reviews;
 
     @ManyToMany
     @JoinTable(name = "company_to_tag",
             joinColumns = @JoinColumn(name = "company_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id"))
-    private List<Tag> tags;
+    private Set<Tag> tags;
 }

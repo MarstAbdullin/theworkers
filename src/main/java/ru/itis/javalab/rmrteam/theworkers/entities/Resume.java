@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -15,7 +15,6 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name = "resume")
-
 public class Resume implements Serializable{
 
     @Id
@@ -35,11 +34,16 @@ public class Resume implements Serializable{
     private String email;
     private String careerObjective;
     private String languages;
+    private Boolean confirmedByTeacher;
 
     @ManyToOne
     @JoinColumn(name = "student_id")
     private StudentInfo student;
 
+    @ManyToOne
+    @JoinColumn(name = "teacher_id")
+    private TeacherInfo teacherInfo;
+
     @OneToMany(mappedBy = "resume", cascade = CascadeType.ALL)
-    private List<Certificate> certificates;
+    private Set<Certificate> certificates;
 }

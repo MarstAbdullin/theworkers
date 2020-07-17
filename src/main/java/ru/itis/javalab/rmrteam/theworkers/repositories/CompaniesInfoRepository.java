@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 import ru.itis.javalab.rmrteam.theworkers.entities.CompanyInfo;
 
 @Repository
-public interface CompanyInfoRepository extends JpaRepository<CompanyInfo, Long> {
+public interface CompaniesInfoRepository extends JpaRepository<CompanyInfo, Long> {
 }

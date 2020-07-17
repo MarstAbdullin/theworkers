@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 import ru.itis.javalab.rmrteam.theworkers.entities.Tag;
 
 @Repository
-public interface TagRepository extends JpaRepository<Tag, Long> {
+public interface TagsRepository extends JpaRepository<Tag, Long> {
 }

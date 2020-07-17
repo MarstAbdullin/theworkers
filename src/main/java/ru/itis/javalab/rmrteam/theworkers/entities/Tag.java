@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -22,12 +22,12 @@ public class Tag implements Serializable{
     private Long id;
     private String tag;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "tag")
-    private List<TeacherInfo> teachers;
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "tags")
+    private Set<TeacherInfo> teachers;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "tag")
-    private List<StudentInfo> students;
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "tags")
+    private Set<StudentInfo> students;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "tag")
-    private List<CompanyInfo> companies;
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "tags")
+    private Set<CompanyInfo> companies;
 }
