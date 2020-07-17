@@ -8,6 +8,7 @@ import ru.itis.javalab.rmrteam.theworkers.entities.CompanyInfo;
 import ru.itis.javalab.rmrteam.theworkers.entities.TeacherInfo;
 import ru.itis.javalab.rmrteam.theworkers.repositories.CompaniesInfoRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -20,15 +21,7 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
         Optional<CompanyInfo> companyInfoOptional = companiesInfoRepository.findById(id);
         if (companyInfoOptional.isPresent()){
             CompanyInfo companyInfo = companyInfoOptional.get();
-            return Optional.ofNullable(CompanyInfoDto.builder()
-                    .address(companyInfo.getAddress())
-                    .companyName(companyInfo.getCompanyName())
-                    .id(companyInfo.getId())
-                    .logoPath(companyInfo.getLogoPath())
-                    .phoneNumber(companyInfo.getPhoneNumber())
-                    .tags(companyInfo.getTags())
-                    .userDto(UserDto.from(companyInfo.getUser()))
-                    .build());
+            return Optional.ofNullable(CompanyInfoDto.from(companyInfo));
         } else
             return Optional.empty();
     }
@@ -55,5 +48,10 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
             companyInfo.setPhoneNumber(companyInfoDto.getPhoneNumber());
 
         companiesInfoRepository.save(companyInfo);
+    }
+
+    @Override
+    public List<CompanyInfoDto> getAllCompany() {
+        return CompanyInfoDto.from(companiesInfoRepository.findAll());
     }
 }

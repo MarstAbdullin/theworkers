@@ -11,6 +11,7 @@ import ru.itis.javalab.rmrteam.theworkers.security.jwt.details.UserDetailsImpl;
 import ru.itis.javalab.rmrteam.theworkers.services.CompanyInfoService;
 import ru.itis.javalab.rmrteam.theworkers.services.UsersService;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -40,6 +41,11 @@ public class CompanyRestController {
             return new ResponseEntity<>(companyInfoDto, HttpStatus.OK);
         } else
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping(value = "/companies")
+    public ResponseEntity<List<CompanyInfoDto>> getAllCompanies() {
+        return ResponseEntity.ok(companyInfoService.getAllCompany());
     }
 
 }

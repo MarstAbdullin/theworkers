@@ -6,8 +6,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.itis.javalab.rmrteam.theworkers.entities.StudentInfo;
 import ru.itis.javalab.rmrteam.theworkers.entities.Tag;
+import ru.itis.javalab.rmrteam.theworkers.entities.TeacherInfo;
 
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Data
 @Builder
@@ -24,4 +27,28 @@ public class TeacherInfoDto {
     private Set<StudentInfo> students;
     private Set<Tag> tags;
     private String photoPath;
+
+    public static TeacherInfoDto from(TeacherInfo teacherInfo) {
+        return TeacherInfoDto.builder()
+                .id(teacherInfo.getId())
+                .firstName(teacherInfo.getFirstName())
+                .secondName(teacherInfo.getSecondName())
+                .positionInUniversity(teacherInfo.getPositionInUniversity())
+                .workingExperience(teacherInfo.getWorkingExperience())
+                .userDto(UserDto.builder()
+                        .email(teacherInfo.getUser().getEmail())
+                        .role(teacherInfo.getUser().getRole())
+                        .id(teacherInfo.getUser().getId())
+                        .build())
+                .students(teacherInfo.getStudents())
+                .tags(teacherInfo.getTags())
+                .photoPath(teacherInfo.getPhotoPath())
+                .build();
+    }
+
+    public static List<TeacherInfoDto> from(List<TeacherInfo> list) {
+        return list.stream()
+                .map(TeacherInfoDto::from)
+                .collect(Collectors.toList());
+    }
 }

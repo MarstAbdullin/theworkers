@@ -8,6 +8,7 @@ import ru.itis.javalab.rmrteam.theworkers.entities.StudentInfo;
 import ru.itis.javalab.rmrteam.theworkers.entities.User;
 import ru.itis.javalab.rmrteam.theworkers.repositories.StudentsInfoRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -24,25 +25,7 @@ public class StudentInfoServiceImpl implements StudentInfoService{
         else
             return Optional.empty();
 
-        User user = studentInfo.getUser();
-
-        return Optional.ofNullable(StudentInfoDto.builder()
-                .id(studentInfo.getId())
-                .firstName(studentInfo.getFirstName())
-                .secondName(studentInfo.getSecondName())
-                .age(studentInfo.getAge())
-                .courseNumber(studentInfo.getCourseNumber())
-                .userDto(UserDto.builder()
-                        .email(user.getEmail())
-                        .role(user.getRole())
-                        .id(user.getId())
-                        .build())
-                .tags(studentInfo.getTags())
-                .photoPath(studentInfo.getPhotoPath())
-                .resumes(studentInfo.getResumes())
-                .specialty(studentInfo.getSpecialty())
-                .teachers(studentInfo.getTeachers())
-                .build());
+        return Optional.ofNullable(StudentInfoDto.from(studentInfo));
     }
 
     public void updateStudentInfo(StudentInfoDto studentInfoDto, Long userId) {
@@ -72,5 +55,10 @@ public class StudentInfoServiceImpl implements StudentInfoService{
             studentInfo.setTags(studentInfoDto.getTags());
 
         studentsInfoRepository.save(studentInfo);
+    }
+
+    @Override
+    public List<StudentInfoDto> getAllStudents() {
+        return StudentInfoDto.from(studentsInfoRepository.findAll());
     }
 }

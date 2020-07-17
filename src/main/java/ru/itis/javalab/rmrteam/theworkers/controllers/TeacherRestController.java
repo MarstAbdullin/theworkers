@@ -52,4 +52,9 @@ public class TeacherRestController {
         return unconfirmedResumes.map(resumes -> new ResponseEntity<>(resumes, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    @GetMapping(value = "/getAllTeachers")
+    public ResponseEntity<List<TeacherInfoDto>> getAllTeachers() {
+        return ResponseEntity.ok(teacherInfoService.getAllTeachers());
+    }
+
 }

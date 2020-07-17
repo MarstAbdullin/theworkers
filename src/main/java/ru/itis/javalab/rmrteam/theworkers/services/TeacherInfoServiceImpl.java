@@ -27,23 +27,7 @@ public class TeacherInfoServiceImpl implements TeacherInfoService{
         else
             return Optional.empty();
 
-        User user = teacherInfo.getUser();
-
-        return Optional.ofNullable(TeacherInfoDto.builder()
-                .id(teacherInfo.getId())
-                .firstName(teacherInfo.getFirstName())
-                .secondName(teacherInfo.getSecondName())
-                .positionInUniversity(teacherInfo.getPositionInUniversity())
-                .workingExperience(teacherInfo.getWorkingExperience())
-                .userDto(UserDto.builder()
-                        .email(user.getEmail())
-                        .role(user.getRole())
-                        .id(user.getId())
-                        .build())
-                .students(teacherInfo.getStudents())
-                .tags(teacherInfo.getTags())
-                .photoPath(teacherInfo.getPhotoPath())
-                .build());
+        return Optional.ofNullable(TeacherInfoDto.from(teacherInfo));
     }
 
     @Override
@@ -90,6 +74,12 @@ public class TeacherInfoServiceImpl implements TeacherInfoService{
             return Optional.empty();
         }
 
+    }
+
+    @Override
+    public List<TeacherInfoDto> getAllTeachers() {
+        return TeacherInfoDto.from(
+                teachersInfoRepository.findAll());
     }
 
 }

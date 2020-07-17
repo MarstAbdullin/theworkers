@@ -12,6 +12,8 @@ import ru.itis.javalab.rmrteam.theworkers.security.jwt.details.UserDetailsImpl;
 import ru.itis.javalab.rmrteam.theworkers.services.StudentInfoService;
 import ru.itis.javalab.rmrteam.theworkers.services.UsersService;
 
+import java.util.List;
+
 @RestController
 public class StudentRestController {
 
@@ -40,6 +42,11 @@ public class StudentRestController {
             return new ResponseEntity<>(studentInfoDto, HttpStatus.OK);
         } else
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping(value = "/getAllStudents")
+    public ResponseEntity<List<StudentInfoDto>> getAllStudents() {
+        return ResponseEntity.ok(studentInfoService.getAllStudents());
     }
 
 }
