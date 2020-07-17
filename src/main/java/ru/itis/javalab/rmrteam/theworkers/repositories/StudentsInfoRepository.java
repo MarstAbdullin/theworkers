@@ -4,6 +4,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import ru.itis.javalab.rmrteam.theworkers.entities.StudentInfo;
 
-@Repository
 public interface StudentsInfoRepository extends JpaRepository<StudentInfo, Long> {
 }

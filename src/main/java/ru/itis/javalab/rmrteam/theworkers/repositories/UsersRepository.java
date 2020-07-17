@@ -12,7 +12,6 @@ import ru.itis.javalab.rmrteam.theworkers.entities.User;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
 public interface UsersRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);
 
