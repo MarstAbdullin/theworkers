@@ -7,7 +7,6 @@ import ru.itis.javalab.rmrteam.theworkers.dto.UserDto;
 import ru.itis.javalab.rmrteam.theworkers.entities.Resume;
 import ru.itis.javalab.rmrteam.theworkers.entities.TeacherInfo;
 import ru.itis.javalab.rmrteam.theworkers.entities.User;
-import ru.itis.javalab.rmrteam.theworkers.repositories.StudentsInfoRepository;
 import ru.itis.javalab.rmrteam.theworkers.repositories.TeachersInfoRepository;
 
 import java.util.ArrayList;
@@ -44,7 +43,6 @@ public class TeacherInfoServiceImpl implements TeacherInfoService{
                 .students(teacherInfo.getStudents())
                 .tags(teacherInfo.getTags())
                 .photoPath(teacherInfo.getPhotoPath())
-                .confirmed(teacherInfo.getConfirmed())
                 .build());
     }
 

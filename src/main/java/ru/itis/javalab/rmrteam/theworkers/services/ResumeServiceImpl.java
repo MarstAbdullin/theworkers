@@ -3,8 +3,9 @@ package ru.itis.javalab.rmrteam.theworkers.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.itis.javalab.rmrteam.theworkers.entities.Resume;
-import ru.itis.javalab.rmrteam.theworkers.entities.TeacherInfo;
+import ru.itis.javalab.rmrteam.theworkers.entities.StudentInfo;
 import ru.itis.javalab.rmrteam.theworkers.repositories.ResumesRepository;
+import ru.itis.javalab.rmrteam.theworkers.repositories.StudentsInfoRepository;
 
 import java.util.Optional;
 
@@ -13,6 +14,9 @@ public class ResumeServiceImpl implements ResumeService{
 
     @Autowired
     ResumesRepository resumesRepository;
+
+    @Autowired
+    StudentsInfoRepository studentsInfoRepository;
 
     @Override
     public void updateResume(Resume resume) {
@@ -57,9 +61,13 @@ public class ResumeServiceImpl implements ResumeService{
     }
 
     @Override
-    public void saveResume(Resume resume) {
-        if (resume != null)
-            resumesRepository.save(resume);
+    public void saveResume(Resume resume, Long id) {
+        Optional<StudentInfo> studentInfoOptional = studentsInfoRepository.findById(id);
+        if (resume != null && studentInfoOptional.isPresent()){
+            StudentInfo studentInfo = studentInfoOptional.get();
+            studentInfo.getResumes().add(resume);
+            studentsInfoRepository.save(studentInfo);
+        }
     }
 
     @Override

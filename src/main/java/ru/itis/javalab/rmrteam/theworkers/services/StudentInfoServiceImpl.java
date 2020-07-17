@@ -39,7 +39,6 @@ public class StudentInfoServiceImpl implements StudentInfoService{
                         .build())
                 .tags(studentInfo.getTags())
                 .photoPath(studentInfo.getPhotoPath())
-                .confirmed(studentInfo.getConfirmed())
                 .resumes(studentInfo.getResumes())
                 .specialty(studentInfo.getSpecialty())
                 .teachers(studentInfo.getTeachers())

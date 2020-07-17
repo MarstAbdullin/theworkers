@@ -6,11 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.itis.javalab.rmrteam.theworkers.entities.StudentInfo;
 import ru.itis.javalab.rmrteam.theworkers.entities.Tag;
-import ru.itis.javalab.rmrteam.theworkers.entities.User;
 
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import java.util.Set;
 
 @Data

@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import ru.itis.javalab.rmrteam.theworkers.dto.StudentInfoDto;
 import ru.itis.javalab.rmrteam.theworkers.dto.TeacherInfoDto;
 import ru.itis.javalab.rmrteam.theworkers.entities.Resume;
 import ru.itis.javalab.rmrteam.theworkers.security.jwt.details.UserDetailsImpl;
@@ -22,10 +21,14 @@ public class TeacherRestController {
     @Autowired
     private TeacherInfoService teacherInfoService;
 
+    @Autowired
+    private UsersService usersService;
+
     @PreAuthorize("hasRole('TEACHER')")
     @PostMapping(value = "/teacherProfile")
     public ResponseEntity<?> changeProfile(@RequestBody TeacherInfoDto teacherInfoDto, Authentication authentication) {
-        if (teacherInfoDto.getId().equals(((UserDetailsImpl)authentication.getPrincipal()).getUserId())) {
+        Long infoId = usersService.getUserRoleId(((UserDetailsImpl)authentication.getPrincipal()).getUserId()).get();
+        if (teacherInfoDto.getId().equals(infoId)) {
             teacherInfoService.updateTeacherInfo(teacherInfoDto, ((UserDetailsImpl) authentication.getPrincipal()).getUserId());
             return new ResponseEntity<>(HttpStatus.OK);
         } else
@@ -44,7 +47,8 @@ public class TeacherRestController {
 
     @GetMapping(value = "/unconfirmed")
     public ResponseEntity<List<Resume>> getUnconfirmedResumes(Authentication authentication) {
-        Optional<List<Resume>> unconfirmedResumes = teacherInfoService.getUnconfirmedResumes(((UserDetailsImpl)authentication.getPrincipal()).getUserId());
+        Long infoId = usersService.getUserRoleId(((UserDetailsImpl)authentication.getPrincipal()).getUserId()).get();
+        Optional<List<Resume>> unconfirmedResumes = teacherInfoService.getUnconfirmedResumes(infoId);
         return unconfirmedResumes.map(resumes -> new ResponseEntity<>(resumes, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
