@@ -43,7 +43,7 @@ public class CompanyRestController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping(value = "/companies")
+    @GetMapping(value = "/getAllCompanies")
     public ResponseEntity<List<CompanyInfoDto>> getAllCompanies() {
         return ResponseEntity.ok(companyInfoService.getAllCompany());
     }
