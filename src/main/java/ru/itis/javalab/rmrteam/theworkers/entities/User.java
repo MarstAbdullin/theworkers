@@ -22,6 +22,7 @@ public class User implements Serializable {
     private String email;
     private String hash;
     private Boolean confirmed;
+    private String confirmLink;
 
     @Enumerated(EnumType.STRING)
     private Role role;

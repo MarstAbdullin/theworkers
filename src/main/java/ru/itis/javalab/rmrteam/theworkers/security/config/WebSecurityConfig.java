@@ -33,7 +33,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
         http.formLogin().disable();
-        http.logout().disable();
+        http.logout()
+                .deleteCookies("Authorization")
+                .logoutSuccessUrl("/signIn")
+                .logoutUrl("logout");
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilterBefore(jwtAuthenticationFilter, BasicAuthenticationFilter.class);
     }

@@ -15,11 +15,16 @@ import java.util.Optional;
 public interface UsersRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);
 
+    Optional<User> findByConfirmLink(String email);
+
     List<User> findAllByRole(Role role);
 
     @Query("from User user where " +
             "(:role = user.role) and (" +
             "upper(user.email) like concat('%', upper(:query), '%'))")
     Page<User> search(@Param("query") String query, @Param("role") Role role, Pageable pageable);
+
+    @Query("update User u set u.confirmed = true where u.email = ?1")
+    void confirmed(String email);
 
 }

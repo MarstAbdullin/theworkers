@@ -29,7 +29,7 @@ public class TeachersInfoRepositoryTest {
 
     @Test
     @Transactional
-    public void findStudentByIdTest() {
+    public void findTeacherByIdTest() {
 
         User user = User.builder()
                 .email("email")
