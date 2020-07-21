@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import ru.itis.javalab.rmrteam.theworkers.dto.*;
+import ru.itis.javalab.rmrteam.theworkers.entities.Role;
 import ru.itis.javalab.rmrteam.theworkers.security.jwt.details.UserDetailsImpl;
 import ru.itis.javalab.rmrteam.theworkers.services.SignInService;
 import ru.itis.javalab.rmrteam.theworkers.services.SignUpService;
@@ -18,6 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+@CrossOrigin(origins={ "http://localhost:3000", "http://localhost:4200", "http://localhost:8081" })
 @RestController
 public class SignUpRestController {
 
@@ -37,15 +39,23 @@ public class SignUpRestController {
                 return ResponseEntity.badRequest().body("Поля не должны быть пустыми");
             }
 
-            signUpService.signUp(dto, UUID.randomUUID().toString());
-            signInService.signIn(SignInDto.builder().email(dto.getEmail()).password(dto.getPassword()).build());
+            Long id = signUpService.signUp(dto, UUID.randomUUID().toString());
+            if (dto.getRole().equals(Role.COMPANY)){
+                signUpService.registerCompany(CompanyInfoDto.builder().build(), id);
+            }
+            if (dto.getRole().equals(Role.STUDENT)){
+                signUpService.registerStudent(StudentInfoDto.builder().build(), id);
+            }
+            if (dto.getRole().equals(Role.TEACHER)){
+                signUpService.registerTeacher(TeacherInfoDto.builder().build(), id);
+            }
             return ResponseEntity.ok().body("Регистрация прошла успешно");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body("Этот email уже зарегистрирован");
         }
     }
 
-    @PreAuthorize(value = "hasRole('STUDENT')")
+    /*@PreAuthorize(value = "hasRole('STUDENT')")
     @PostMapping(value = "/signUp/student", produces = "text/plain;charset=UTF-8")
     public ResponseEntity<?> registerStudent(@RequestBody StudentInfoDto dto, Authentication authentication) {
             signUpService.registerStudent(dto, ((UserDetailsImpl)authentication.getPrincipal()).getUserId());
@@ -64,7 +74,7 @@ public class SignUpRestController {
     public ResponseEntity<?> registerTeacher(@RequestBody TeacherInfoDto dto, Authentication authentication) {
         signUpService.registerTeacher(dto, ((UserDetailsImpl)authentication.getPrincipal()).getUserId());
         return ResponseEntity.ok().body("Регистрация преподавателя прошла успешно, ждите подтверждения");
-    }
+    }*/
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)

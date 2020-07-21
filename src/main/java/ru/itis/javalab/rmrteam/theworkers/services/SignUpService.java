@@ -7,7 +7,7 @@ import ru.itis.javalab.rmrteam.theworkers.dto.TeacherInfoDto;
 
 public interface SignUpService {
 
-    void signUp(SignUpDto signUpDto, String confirmLink);
+    Long signUp(SignUpDto signUpDto, String confirmLink);
 
     void registerStudent(StudentInfoDto studentInfoDto, Long id);
 

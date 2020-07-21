@@ -92,4 +92,9 @@ public class TeacherInfoServiceImpl implements TeacherInfoService{
 
     }
 
+    @Override
+    public List<TeacherInfo> getAllTeachers() {
+        return teachersInfoRepository.findAll();
+    }
+
 }

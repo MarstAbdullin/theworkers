@@ -7,12 +7,14 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ru.itis.javalab.rmrteam.theworkers.dto.CompanyInfoDto;
+import ru.itis.javalab.rmrteam.theworkers.entities.Role;
 import ru.itis.javalab.rmrteam.theworkers.security.jwt.details.UserDetailsImpl;
 import ru.itis.javalab.rmrteam.theworkers.services.CompanyInfoService;
 import ru.itis.javalab.rmrteam.theworkers.services.UsersService;
 
 import java.util.Optional;
 
+@CrossOrigin(origins={ "http://localhost:3000", "http://localhost:4200", "http://localhost:8081" })
 @RestController
 public class CompanyRestController {
     @Autowired
@@ -21,12 +23,11 @@ public class CompanyRestController {
     @Autowired
     private UsersService usersService;
 
-    @PreAuthorize("hasRole('COMPANY')")
     @PostMapping(value = "/companyProfile")
     public ResponseEntity<?> changeProfile(@RequestBody CompanyInfoDto companyInfoDto, Authentication authentication) {
-        Long infoId = usersService.getUserRoleId(((UserDetailsImpl)authentication.getPrincipal()).getUserId()).get();
-        if (companyInfoDto.getId().equals(infoId)) {
-            companyInfoService.updateCompanyInfo(companyInfoDto, infoId);
+        UserDetailsImpl userDetails = (UserDetailsImpl)authentication.getPrincipal();
+        if (userDetails.getRole().equals(Role.COMPANY)) {
+            companyInfoService.updateCompanyInfo(companyInfoDto, userDetails.getId());
             return new ResponseEntity<>(HttpStatus.OK);
         } else
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

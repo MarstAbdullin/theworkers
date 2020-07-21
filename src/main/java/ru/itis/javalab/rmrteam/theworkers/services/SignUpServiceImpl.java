@@ -35,7 +35,7 @@ public class SignUpServiceImpl implements SignUpService {
     private TeachersInfoRepository teachersInfoRepository;
 
     @Override
-    public void signUp(SignUpDto signUpDto, String confirmLink) {
+    public Long signUp(SignUpDto signUpDto, String confirmLink) {
         if (!usersRepository.findByEmail(signUpDto.getEmail()).isPresent()) {
             User user = User.builder()
                     .email(signUpDto.getEmail())
@@ -43,6 +43,7 @@ public class SignUpServiceImpl implements SignUpService {
                     .role(signUpDto.getRole())
                     .build();
             usersRepository.save(user);
+            return usersRepository.findByEmail(signUpDto.getEmail()).get().getId();
         } else throw new IllegalArgumentException("Пользователь с таким email уже существует");
     }
 

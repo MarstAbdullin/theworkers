@@ -27,7 +27,7 @@ public class CompanyInfo implements Serializable {
     private String phoneNumber;
 
     @OneToOne
-    @MapsId("company")
+    @MapsId
     private User user;
 
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)

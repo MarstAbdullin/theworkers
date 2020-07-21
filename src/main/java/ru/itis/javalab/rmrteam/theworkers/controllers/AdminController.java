@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.itis.javalab.rmrteam.theworkers.entities.Tag;
 import ru.itis.javalab.rmrteam.theworkers.services.AdminService;
 
+@CrossOrigin(origins={ "http://localhost:3000", "http://localhost:4200", "http://localhost:8081" })
 @RestController
 public class AdminController {
 

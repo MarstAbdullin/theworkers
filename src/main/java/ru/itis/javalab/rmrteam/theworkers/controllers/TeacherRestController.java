@@ -8,6 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ru.itis.javalab.rmrteam.theworkers.dto.TeacherInfoDto;
 import ru.itis.javalab.rmrteam.theworkers.entities.Resume;
+import ru.itis.javalab.rmrteam.theworkers.entities.TeacherInfo;
 import ru.itis.javalab.rmrteam.theworkers.security.jwt.details.UserDetailsImpl;
 import ru.itis.javalab.rmrteam.theworkers.services.TeacherInfoService;
 import ru.itis.javalab.rmrteam.theworkers.services.UsersService;
@@ -15,6 +16,7 @@ import ru.itis.javalab.rmrteam.theworkers.services.UsersService;
 import java.util.List;
 import java.util.Optional;
 
+@CrossOrigin(origins={ "http://localhost:3000", "http://localhost:4200", "http://localhost:8081" })
 @RestController
 public class TeacherRestController {
 
@@ -27,9 +29,9 @@ public class TeacherRestController {
     @PreAuthorize("hasRole('TEACHER')")
     @PostMapping(value = "/teacherProfile")
     public ResponseEntity<?> changeProfile(@RequestBody TeacherInfoDto teacherInfoDto, Authentication authentication) {
-        Long infoId = usersService.getUserRoleId(((UserDetailsImpl)authentication.getPrincipal()).getUserId()).get();
+        Long infoId = usersService.getUserRoleId(((UserDetailsImpl)authentication.getPrincipal()).getId()).get();
         if (teacherInfoDto.getId().equals(infoId)) {
-            teacherInfoService.updateTeacherInfo(teacherInfoDto, ((UserDetailsImpl) authentication.getPrincipal()).getUserId());
+            teacherInfoService.updateTeacherInfo(teacherInfoDto, ((UserDetailsImpl) authentication.getPrincipal()).getId());
             return new ResponseEntity<>(HttpStatus.OK);
         } else
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -45,9 +47,18 @@ public class TeacherRestController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    @GetMapping(value = "/teachers")
+    public ResponseEntity<List<TeacherInfo>> read() {
+        List<TeacherInfo> teacherInfoList = teacherInfoService.getAllTeachers();
+        if (!teacherInfoList.isEmpty())
+            return new ResponseEntity<>(teacherInfoList, HttpStatus.OK);
+        else
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
     @GetMapping(value = "/unconfirmed")
     public ResponseEntity<List<Resume>> getUnconfirmedResumes(Authentication authentication) {
-        Long infoId = usersService.getUserRoleId(((UserDetailsImpl)authentication.getPrincipal()).getUserId()).get();
+        Long infoId = usersService.getUserRoleId(((UserDetailsImpl)authentication.getPrincipal()).getId()).get();
         Optional<List<Resume>> unconfirmedResumes = teacherInfoService.getUnconfirmedResumes(infoId);
         return unconfirmedResumes.map(resumes -> new ResponseEntity<>(resumes, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
