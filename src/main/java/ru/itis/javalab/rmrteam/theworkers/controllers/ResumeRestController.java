@@ -7,11 +7,12 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ru.itis.javalab.rmrteam.theworkers.entities.Resume;
+import ru.itis.javalab.rmrteam.theworkers.entities.Role;
 import ru.itis.javalab.rmrteam.theworkers.security.jwt.details.UserDetailsImpl;
 import ru.itis.javalab.rmrteam.theworkers.services.ResumeService;
 import ru.itis.javalab.rmrteam.theworkers.services.UsersService;
 
-@CrossOrigin(origins={ "http://localhost:3000", "http://localhost:4200", "http://localhost:8081" })
+@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:4200", "http://localhost:8081"})
 @RestController
 public class ResumeRestController {
 
@@ -21,22 +22,22 @@ public class ResumeRestController {
     @Autowired
     private UsersService usersService;
 
-    @PreAuthorize("hasRole('STUDENT')")
     @PostMapping(value = "/resume")
     public ResponseEntity<?> changeResume(@RequestBody Resume resume, Authentication authentication) {
-        Long infoId = usersService.getUserRoleId(((UserDetailsImpl)authentication.getPrincipal()).getId()).get();
-        if (resume.getStudent().getId().equals(infoId)) {
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        Long infoId = usersService.getUserRoleId(((UserDetailsImpl) authentication.getPrincipal()).getId()).get();
+        if (userDetails.getRole().equals(Role.STUDENT) && resume.getStudent().getId().equals(infoId)) {
             resumeService.updateResume(resume);
             return new ResponseEntity<>(HttpStatus.OK);
         } else
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @PreAuthorize("hasRole('STUDENT')")
     @PostMapping(value = "/createResume")
     public ResponseEntity<?> createResume(@RequestBody Resume resume, Authentication authentication) {
-        Long infoId = usersService.getUserRoleId(((UserDetailsImpl)authentication.getPrincipal()).getId()).get();
-        if (resume != null) {
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        Long infoId = usersService.getUserRoleId(((UserDetailsImpl) authentication.getPrincipal()).getId()).get();
+        if (userDetails.getRole().equals(Role.STUDENT)) {
             resumeService.saveResume(resume, infoId);
             return new ResponseEntity<>(HttpStatus.OK);
         } else
@@ -53,18 +54,21 @@ public class ResumeRestController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PreAuthorize("hasRole('TEACHER')")
     @GetMapping(value = "/resume/{id}/confirm")
     public ResponseEntity<?> confirmResume(@PathVariable(name = "id") Long id, Authentication authentication) {
-        Resume resume;
-        Long infoId = usersService.getUserRoleId(((UserDetailsImpl)authentication.getPrincipal()).getId()).get();
-        if (resumeService.getResume(id).isPresent()) {
-            resume = resumeService.getResume(id).get();
-            if (resume.getTeacherInfo().getId().equals(infoId)) {
-                resumeService.confirmResume(id);
-                return new ResponseEntity<>(HttpStatus.OK);
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        Long infoId = usersService.getUserRoleId(((UserDetailsImpl) authentication.getPrincipal()).getId()).get();
+        if (userDetails.getRole().equals(Role.TEACHER)) {
+            Resume resume;
+            if (resumeService.getResume(id).isPresent()) {
+                resume = resumeService.getResume(id).get();
+                if (resume.getTeacherInfo().getId().equals(infoId)) {
+                    resumeService.confirmResume(id);
+                    return new ResponseEntity<>(HttpStatus.OK);
+                } else
+                    return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             } else
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }

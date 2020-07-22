@@ -8,6 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ru.itis.javalab.rmrteam.theworkers.dto.TeacherInfoDto;
 import ru.itis.javalab.rmrteam.theworkers.entities.Resume;
+import ru.itis.javalab.rmrteam.theworkers.entities.Role;
 import ru.itis.javalab.rmrteam.theworkers.entities.TeacherInfo;
 import ru.itis.javalab.rmrteam.theworkers.security.jwt.details.UserDetailsImpl;
 import ru.itis.javalab.rmrteam.theworkers.services.TeacherInfoService;
@@ -26,11 +27,10 @@ public class TeacherRestController {
     @Autowired
     private UsersService usersService;
 
-    @PreAuthorize("hasRole('TEACHER')")
     @PostMapping(value = "/teacherProfile")
     public ResponseEntity<?> changeProfile(@RequestBody TeacherInfoDto teacherInfoDto, Authentication authentication) {
-        Long infoId = usersService.getUserRoleId(((UserDetailsImpl)authentication.getPrincipal()).getId()).get();
-        if (teacherInfoDto.getId().equals(infoId)) {
+        UserDetailsImpl userDetails = (UserDetailsImpl)authentication.getPrincipal();
+        if (userDetails.getRole().equals(Role.TEACHER) && teacherInfoDto.getId().equals(userDetails.getId())) {
             teacherInfoService.updateTeacherInfo(teacherInfoDto, ((UserDetailsImpl) authentication.getPrincipal()).getId());
             return new ResponseEntity<>(HttpStatus.OK);
         } else

@@ -25,7 +25,7 @@ public class StudentRestController {
     @PostMapping(value = "/studentProfile")
     public ResponseEntity<?> changeProfile(@RequestBody StudentInfoDto studentInfoDto, Authentication authentication) {
         UserDetailsImpl userDetails = (UserDetailsImpl)authentication.getPrincipal();
-        if (userDetails.getRole().equals(Role.STUDENT)) {
+        if (userDetails.getRole().equals(Role.STUDENT) && userDetails.getId().equals(studentInfoDto.getId())) {
             studentInfoService.updateStudentInfo(studentInfoDto, userDetails.getId());
             return new ResponseEntity<>(HttpStatus.OK);
         } else
