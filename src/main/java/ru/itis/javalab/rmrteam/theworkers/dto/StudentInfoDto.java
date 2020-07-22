@@ -8,6 +8,7 @@ import ru.itis.javalab.rmrteam.theworkers.entities.Resume;
 import ru.itis.javalab.rmrteam.theworkers.entities.Tag;
 import ru.itis.javalab.rmrteam.theworkers.entities.TeacherInfo;
 
+import java.awt.*;
 import java.util.Set;
 
 @Data

@@ -6,12 +6,16 @@ import ru.itis.javalab.rmrteam.theworkers.dto.StudentInfoDto;
 import ru.itis.javalab.rmrteam.theworkers.dto.UserDto;
 import ru.itis.javalab.rmrteam.theworkers.entities.StudentInfo;
 import ru.itis.javalab.rmrteam.theworkers.entities.User;
+import ru.itis.javalab.rmrteam.theworkers.repositories.ResumesRepository;
 import ru.itis.javalab.rmrteam.theworkers.repositories.StudentsInfoRepository;
 
 import java.util.Optional;
 
 @Service
 public class StudentInfoServiceImpl implements StudentInfoService{
+
+    @Autowired
+    private ResumesRepository resumesRepository;
 
     @Autowired
     private StudentsInfoRepository studentsInfoRepository;
@@ -39,7 +43,7 @@ public class StudentInfoServiceImpl implements StudentInfoService{
                         .build())
                 .tags(studentInfo.getTags())
                 .photoPath(studentInfo.getPhotoPath())
-                .resumes(studentInfo.getResumes())
+                .resumes(resumesRepository.findAllByStudentId(studentInfo.getId()))
                 .specialty(studentInfo.getSpecialty())
                 .teachers(studentInfo.getTeachers())
                 .build());

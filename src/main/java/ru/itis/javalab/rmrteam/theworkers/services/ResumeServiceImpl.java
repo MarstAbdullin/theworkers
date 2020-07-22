@@ -65,8 +65,8 @@ public class ResumeServiceImpl implements ResumeService{
         Optional<StudentInfo> studentInfoOptional = studentsInfoRepository.findById(id);
         if (resume != null && studentInfoOptional.isPresent()){
             StudentInfo studentInfo = studentInfoOptional.get();
-            studentInfo.getResumes().add(resume);
-            studentsInfoRepository.save(studentInfo);
+            resume.setStudentId(studentInfo.getId());
+            resumesRepository.save(resume);
         }
     }
 

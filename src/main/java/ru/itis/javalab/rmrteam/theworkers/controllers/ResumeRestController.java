@@ -26,7 +26,7 @@ public class ResumeRestController {
     public ResponseEntity<?> changeResume(@RequestBody Resume resume, Authentication authentication) {
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         Long infoId = usersService.getUserRoleId(((UserDetailsImpl) authentication.getPrincipal()).getId()).get();
-        if (userDetails.getRole().equals(Role.STUDENT) && resume.getStudent().getId().equals(infoId)) {
+        if (userDetails.getRole().equals(Role.STUDENT) && resume.getStudentId().equals(infoId)) {
             resumeService.updateResume(resume);
             return new ResponseEntity<>(HttpStatus.OK);
         } else
@@ -62,7 +62,7 @@ public class ResumeRestController {
             Resume resume;
             if (resumeService.getResume(id).isPresent()) {
                 resume = resumeService.getResume(id).get();
-                if (resume.getTeacherInfo().getId().equals(infoId)) {
+                if (resume.getStudentId().equals(infoId)) {
                     resumeService.confirmResume(id);
                     return new ResponseEntity<>(HttpStatus.OK);
                 } else

@@ -7,6 +7,7 @@ import ru.itis.javalab.rmrteam.theworkers.dto.UserDto;
 import ru.itis.javalab.rmrteam.theworkers.entities.Resume;
 import ru.itis.javalab.rmrteam.theworkers.entities.TeacherInfo;
 import ru.itis.javalab.rmrteam.theworkers.entities.User;
+import ru.itis.javalab.rmrteam.theworkers.repositories.ResumesRepository;
 import ru.itis.javalab.rmrteam.theworkers.repositories.TeachersInfoRepository;
 
 import java.util.ArrayList;
@@ -18,6 +19,9 @@ public class TeacherInfoServiceImpl implements TeacherInfoService{
 
     @Autowired
     private TeachersInfoRepository teachersInfoRepository;
+
+    @Autowired
+    private ResumesRepository resumesRepository;
 
     public Optional<TeacherInfoDto> getTeacherInfo(Long id){
         TeacherInfo teacherInfo;
@@ -78,7 +82,7 @@ public class TeacherInfoServiceImpl implements TeacherInfoService{
     @Override
     public Optional<List<Resume>> getUnconfirmedResumes(Long teacherId) {
         if (teachersInfoRepository.findById(teacherId).isPresent()) {
-            List<Resume> resumes = new ArrayList<>(teachersInfoRepository.findById(teacherId).get().getResumes());
+            List<Resume> resumes = new ArrayList<>(resumesRepository.findAllByConfirmedByTeacherAndTeacherId(false, teacherId));
             List<Resume> unconfirmedResumes = new ArrayList<>();
             for (Resume resume : resumes) {
                 if (!resume.getConfirmedByTeacher()) {

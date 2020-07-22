@@ -39,17 +39,7 @@ public class UsersServiceImpl implements UsersService{
         Optional<User> userOptional = usersRepository.findById(id);
         if (userOptional.isPresent()){
             User user = userOptional.get();
-            Role role = user.getRole();
-            if (role.equals(Role.COMPANY)){
-                return Optional.ofNullable(user.getCompany().getId());
-            }
-            if (role.equals(Role.STUDENT)){
-                return Optional.ofNullable(user.getStudent().getId());
-            }
-            if (role.equals(Role.TEACHER)){
-                return Optional.ofNullable(user.getCompany().getId());
-            }
-            return Optional.empty();
+            return Optional.ofNullable(user.getId());
         }
         return Optional.empty();
     }

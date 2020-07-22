@@ -40,8 +40,4 @@ public class StudentInfo implements Serializable{
             joinColumns = @JoinColumn(name = "student_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private Set<Tag> tags;
-
-    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
-    private Set<Resume> resumes;
-
 }

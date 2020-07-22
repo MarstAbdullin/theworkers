@@ -35,14 +35,8 @@ public class Resume implements Serializable{
     private String careerObjective;
     private String languages;
     private Boolean confirmedByTeacher;
-
-    @ManyToOne
-    @JoinColumn(name = "student_id")
-    private StudentInfo student;
-
-    @ManyToOne
-    @JoinColumn(name = "teacher_id")
-    private TeacherInfo teacherInfo;
+    private Long studentId;
+    private Long teacherId;
 
     @OneToMany(mappedBy = "resume", cascade = CascadeType.ALL)
     private Set<Certificate> certificates;
