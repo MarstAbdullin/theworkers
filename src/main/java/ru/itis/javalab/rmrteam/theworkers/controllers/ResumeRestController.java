@@ -57,18 +57,13 @@ public class ResumeRestController {
     @GetMapping(value = "/resume/{id}/confirm")
     public ResponseEntity<?> confirmResume(@PathVariable(name = "id") Long id, Authentication authentication) {
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        Long infoId = ((UserDetailsImpl) authentication.getPrincipal()).getId();
-        if (userDetails.getRole().equals(Role.TEACHER)) {
-            Resume resume;
-            if (resumeService.getResume(id).isPresent()) {
-                resume = resumeService.getResume(id).get();
-                if (resume.getStudentId().equals(infoId)) {
-                    resumeService.confirmResume(id);
-                    return new ResponseEntity<>(HttpStatus.OK);
-                } else
-                    return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        Long infoId = userDetails.getId();
+        if (userDetails.getRole().equals(Role.TEACHER) && resumeService.getResume(id).isPresent()) {
+            if (resumeService.getResume(id).get().getTeacherId().equals(infoId)) {
+                resumeService.confirmResume(id);
+                return new ResponseEntity<>(HttpStatus.OK);
             } else
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } else
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
