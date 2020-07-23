@@ -20,6 +20,7 @@ public class Resume implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String resumeName;
     private String age;
     private String university;
     private Boolean workingInProject;

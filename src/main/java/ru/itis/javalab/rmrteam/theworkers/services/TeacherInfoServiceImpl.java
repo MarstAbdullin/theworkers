@@ -80,25 +80,22 @@ public class TeacherInfoServiceImpl implements TeacherInfoService{
     }
 
     @Override
-    public Optional<List<Resume>> getUnconfirmedResumes(Long teacherId) {
-        if (teachersInfoRepository.findById(teacherId).isPresent()) {
-            List<Resume> resumes = new ArrayList<>(resumesRepository.findAllByConfirmedByTeacherAndTeacherId(false, teacherId));
-            List<Resume> unconfirmedResumes = new ArrayList<>();
-            for (Resume resume : resumes) {
-                if (!resume.getConfirmedByTeacher()) {
-                    unconfirmedResumes.add(resume);
-                }
-            }
-            return Optional.of(unconfirmedResumes);
-        } else {
-            return Optional.empty();
-        }
-
+    public List<Resume> getUnconfirmedResumes(Long teacherId) {
+        return resumesRepository.findAllByConfirmedByTeacherAndTeacherId(false, teacherId);
     }
 
     @Override
-    public List<TeacherInfo> getAllTeachers() {
-        return teachersInfoRepository.findAll();
+    public List<TeacherInfoDto> getAllTeachers() {
+        List<TeacherInfoDto> teacherInfoDtoList = new ArrayList<>();
+        List<TeacherInfo> teacherInfoList = teachersInfoRepository.findAll();
+        for (TeacherInfo teacherInfo : teacherInfoList) {
+            teacherInfoDtoList.add(TeacherInfoDto.builder()
+                    .id(teacherInfo.getId())
+                    .firstName(teacherInfo.getFirstName())
+                    .secondName(teacherInfo.getSecondName())
+                    .build());
+        }
+        return teacherInfoDtoList;
     }
 
 }

@@ -57,7 +57,7 @@ public class ResumeRestController {
     @GetMapping(value = "/resume/{id}/confirm")
     public ResponseEntity<?> confirmResume(@PathVariable(name = "id") Long id, Authentication authentication) {
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        Long infoId = usersService.getUserRoleId(((UserDetailsImpl) authentication.getPrincipal()).getId()).get();
+        Long infoId = ((UserDetailsImpl) authentication.getPrincipal()).getId();
         if (userDetails.getRole().equals(Role.TEACHER)) {
             Resume resume;
             if (resumeService.getResume(id).isPresent()) {

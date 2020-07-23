@@ -15,7 +15,7 @@ public interface TeacherInfoService {
 
     void updateTeacherInfo(TeacherInfoDto teacherInfoDto, Long id);
 
-    Optional<List<Resume>> getUnconfirmedResumes(Long teacherId);
+    List<Resume> getUnconfirmedResumes(Long teacherId);
 
-    List<TeacherInfo> getAllTeachers();
+    List<TeacherInfoDto> getAllTeachers();
 }

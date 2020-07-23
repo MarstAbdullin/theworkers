@@ -26,6 +26,8 @@ public class ResumeServiceImpl implements ResumeService{
         else
             return;
 
+        if (resume.getResumeName() != null)
+            currentResume.setResumeName(resume.getResumeName());
         if (resume.getAge() != null)
             currentResume.setAge(resume.getAge());
         if (resume.getCareerObjective() != null)
@@ -56,7 +58,9 @@ public class ResumeServiceImpl implements ResumeService{
             currentResume.setWorkingFulltime(resume.getWorkingFulltime());
         if (resume.getWorkingInProject() != null)
             currentResume.setWorkingInProject(resume.getWorkingInProject());
-
+        if (resume.getTeacherId() != null)
+            currentResume.setTeacherId(resume.getTeacherId());
+        currentResume.setConfirmedByTeacher(false);
         resumesRepository.save(currentResume);
     }
 

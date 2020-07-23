@@ -10,5 +10,6 @@ import java.util.Set;
 
 public interface ResumesRepository extends JpaRepository<Resume, Long> {
     Set<Resume> findAllByStudentId(Long studentId);
-    Set<Resume> findAllByConfirmedByTeacherAndTeacherId(Boolean confirmedByTeacher, Long teacherId);
+    List<Resume> findAllByConfirmedByTeacherAndTeacherId(Boolean confirmedByTeacher, Long teacherId);
+    List<Resume> findAllByTeacherId(Long teacherId);
 }

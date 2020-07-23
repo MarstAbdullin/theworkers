@@ -48,8 +48,8 @@ public class TeacherRestController {
     }
 
     @GetMapping(value = "/teachers")
-    public ResponseEntity<List<TeacherInfo>> read() {
-        List<TeacherInfo> teacherInfoList = teacherInfoService.getAllTeachers();
+    public ResponseEntity<List<TeacherInfoDto>> read() {
+        List<TeacherInfoDto> teacherInfoList = teacherInfoService.getAllTeachers();
         if (!teacherInfoList.isEmpty())
             return new ResponseEntity<>(teacherInfoList, HttpStatus.OK);
         else
@@ -58,9 +58,13 @@ public class TeacherRestController {
 
     @GetMapping(value = "/unconfirmed")
     public ResponseEntity<List<Resume>> getUnconfirmedResumes(Authentication authentication) {
-        Long infoId = usersService.getUserRoleId(((UserDetailsImpl)authentication.getPrincipal()).getId()).get();
-        Optional<List<Resume>> unconfirmedResumes = teacherInfoService.getUnconfirmedResumes(infoId);
-        return unconfirmedResumes.map(resumes -> new ResponseEntity<>(resumes, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        Long infoId = ((UserDetailsImpl)authentication.getPrincipal()).getId();
+        List<Resume> unconfirmedResumes = teacherInfoService.getUnconfirmedResumes(infoId);
+        if (!unconfirmedResumes.isEmpty()){
+            return new ResponseEntity<>(unconfirmedResumes, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
 }
